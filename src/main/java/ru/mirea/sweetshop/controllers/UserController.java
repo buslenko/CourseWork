@@ -48,14 +48,14 @@ public class UserController {
     @GetMapping("/register")
     public String getRegister(Model model){
         model.addAttribute("user", new User());
-        return "register";
+        return "registration";
     }
 
     @PostMapping("/register")
     public String postRegister(@ModelAttribute("user") User userForm, Map<String, Object> model){
         if(!userService.addUser(userForm)){
             model.put("message", "User exists");
-            return "/register";
+            return "/registration";
         }
         return "redirect:/login";
     }
@@ -102,5 +102,11 @@ public class UserController {
         model.addAttribute("purchaseList", purchaseList);
         model.addAttribute("productService", productService);
         return "/cart";
+    }
+
+    @GetMapping("/cart/delete/{purchaseId}")
+    public String deletePurchase(@PathVariable("purchaseId") Long id){
+        purchaseService.deletePurchase(id);
+        return "redirect:/cart";
     }
 }
